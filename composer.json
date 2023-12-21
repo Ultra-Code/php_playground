@@ -1,0 +1,15 @@
+{
+    "name": "ultracode/test",
+    "autoload": {
+        "psr-4": {
+            "Ultracode\\Test\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Ultra-Code",
+            "email": "mega.alpha100@gmail.com"
+        }
+    ],
+    "require": {}
+}
