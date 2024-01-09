@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ultracode\Test;
+namespace Playground;
 
 /**
  * undocumented class
@@ -19,8 +19,15 @@ class Transaction
         $this->description = $description;
     }
 
+    //using constructor promotion syntax
+    // public function __construct(private float $amount, private string $description)
+    // {
+    //     echo $amount;
+    // }
+
     public function addTax(float $rate): void
     {
+        $nullsafe = (string)null;
         $this->amount += ($this->amount * $rate) / 100;
     }
 

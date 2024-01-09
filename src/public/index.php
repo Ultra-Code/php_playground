@@ -2,19 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Ultracode\Test\public;
+namespace Playground\public;
 
-use Ultracode\Test\Transaction;
+require __DIR__ . '/../vendor/autoload.php';
 
-require_once '../Transaction.php';
+use Playground\Transaction as NormalTransaction;
+use Ramsey\Uuid\UuidFactory;
 
 // phpinfo();
 
 echo '<pre>';
 // print_r($_SERVER);
 // echo '<pre>';
-
-$transaction = new Transaction(amount: 100.0, description: 'nginx rocks');
+$transaction = new NormalTransaction(amount: 100.0, description: 'nginx rocks');
+$uuid = new UuidFactory();
+echo $uuid->uuid4() . '<br/>';
 $transaction->addTax(8);
 $transaction->applyDiscount(10);
 

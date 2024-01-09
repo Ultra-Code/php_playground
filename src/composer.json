@@ -1,0 +1,17 @@
+{
+    "name": "php/playground",
+    "authors": [
+        {
+            "name": "Ultra-Code",
+            "email": "mega.alpha100@gmail.com"
+        }
+    ],
+    "require": {
+        "ramsey/uuid": "^4.7"
+    },
+    "autoload": {
+        "psr-4" :{
+            "Playground\\": "app/"
+        }
+    }
+}
