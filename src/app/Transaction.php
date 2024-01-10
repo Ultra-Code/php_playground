@@ -13,8 +13,16 @@ class Transaction
 
     private string $description;
 
+    public const PAID_STATUS = 'paid';
+    public const PENDING_STATUS = 'pending';
+
+    public static int $instance_count = 0;
+
     public function __construct(float $amount, string $description)
     {
+        echo self::PAID_STATUS;
+        // echo $this::PAID_STATUS;
+        ++self::$instance_count;
         $this->amount = $amount;
         $this->description = $description;
     }
@@ -24,6 +32,10 @@ class Transaction
     // {
     //     echo $amount;
     // }
+    public static function getInstanceCount(): int
+    {
+        return self::$instance_count;
+    }
 
     public function addTax(float $rate): void
     {
