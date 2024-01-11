@@ -121,4 +121,3 @@ function callback(int $arg): int
 
 $val = array_map(fn ($element) => $element * 2, [1, 2, 3, 4]);
 echo $val;
-

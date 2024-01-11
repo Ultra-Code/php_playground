@@ -4,7 +4,7 @@ namespace Playground;
 
 class DebtCollectionService
 {
-    public function collectDebt(DebtCollector  $collector)
+    public function collectDebt(DebtCollector  $collector): void
     {
         debug_zval_dump($collector instanceof CollectionAgency);
         $amountOwed = mt_rand(30, 100);

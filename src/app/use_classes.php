@@ -9,7 +9,7 @@ use Ramsey\Uuid\UuidFactory;
 
 class use_classes
 {
-    public function use_classes(): void
+    public function __invoke(): void
     {
         $uuid = new UuidFactory();
         echo $uuid->uuid4() . '<br/>';
@@ -50,6 +50,36 @@ class use_classes
 
         foreach ($fields  as $index => $field) {
             echo $field->render() . " at index {$index} " . PHP_EOL;
+        }
+
+        $service = new \Playground\DebtCollectionService();
+        $serialized_service = serialize($service);
+        debug_zval_dump($serialized_service);
+        /** @var \Playground\DebtCollectionService $deserialized_service */
+        $deserialized_service =  unserialize($serialized_service);
+        debug_zval_dump($deserialized_service);
+        $deserialized_service->collectDebt(new \Playground\Rocky());
+        // $service->collectDebt(new \Playground\Rocky());
+    }
+
+    public function use_iterators(): void
+    {
+        $period = new \DatePeriod(new \DateTime("05/01/2021"), new \DateInterval('P1D'), new \DateTime("05/31/2021"));
+        debug_zval_dump($period);
+
+        foreach ($period  as $date) {
+            echo $date->format("d/m/y") . PHP_EOL;
+        }
+
+        $invoices = new \Playground\InvoiceCollection([3,6,9,7]);
+        foreach ($invoices  as $key => $value) {
+            echo $key . ' = ' . $value . PHP_EOL;
+        }
+
+
+        $invoices = new \Playground\InvoiceCollectionArrayIterator([3,6,9,7]);
+        foreach ($invoices  as $index => $value) {
+            echo $index . ' = ' . $value . PHP_EOL;
         }
     }
 }
