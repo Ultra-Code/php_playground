@@ -12,6 +12,14 @@ class Invoice
     }
     public function create(): string
     {
-        return "Create Invoice Page";
+        return <<<HTML
+        <form action="/invoice/create" method="post"> <label>Amount<label/><input type="text" name="amount"/> <form/>
+        HTML;
+    }
+
+    public function store(): void
+    {
+        $amount = $_POST['amount'];
+        debug_zval_dump($amount);
     }
 }
