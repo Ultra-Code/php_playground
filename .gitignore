@@ -10,3 +10,6 @@ vendor/
 
 # Env
 *.env
+
+# Storage
+storage/
