@@ -24,7 +24,7 @@ class Router
     /**
      * @param callable(): string|array{class-string,string} $action
      */
-    public function get(string $route, callable|array $action): self
+    public function get(string $route, callable|array $action): Router
     {
         $this->register("GET", $route, $action);
         return $this;
@@ -33,7 +33,7 @@ class Router
     /**
      * @param callable(): string|array{class-string,string} $action
      */
-    public function post(string $route, callable|array $action): self
+    public function post(string $route, callable|array $action): Router
     {
         $this->register("POST", $route, $action);
         return $this;
