@@ -12,10 +12,48 @@ services:
 
   nginx:
     image: nginx:1.25.3-alpine
-    container_name: programwithgio-nginx
+    container_name: nginx
     restart: always
     ports:
       - 8000:80
     volumes:
       - ../src:/var/www
       - ./nginx:/etc/nginx/conf.d
+
+  pgsql:
+    image: postgres:${POSTGRES_VERSION}-alpine
+    container_name: postgress-db
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+      - ./postgres/postgresql.conf:/etc/postgresql/postgresql.conf
+    shm_size: 2GB
+    environment:
+      POSTGRES_INITDB_ARGS_FILE: "/run/secrets/db_init_args"
+      POSTGRES_USER_FILE: /run/secrets/db_user
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+      POSTGRES_DB_FILE: /run/secrets/db_name
+      # it can be desireable to store the transaction log in a different directory which may be
+      # backed by storage with different performance or reliability characteristics.
+      POSTGRES_INITDB_WALDIR: ${POSTGRES_INITDB_WALDIR}
+      PGDATA: ${PGDATA}
+    ports:
+      - ${HOST_ADDRESS}:5433
+    secrets:
+      - db_name
+      - db_user
+      - db_password
+      - db_init_args
+
+# Docker Storage
+volumes:
+  dbdata:
+
+secrets:
+  db_name:
+     file: ./secrets/.pg_dbname.env
+  db_user:
+     file: ./secrets/.pg_user.env
+  db_password:
+     file: ./secrets/.pg_password.env
+  db_init_args:
+     file: ./secrets/.pg_init_args.env

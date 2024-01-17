@@ -7,3 +7,6 @@ vendor/
 
 # Null ls cache file
 .null-ls*
+
+# Env
+*.env
