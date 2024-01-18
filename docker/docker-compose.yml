@@ -52,8 +52,6 @@ services:
     restart: always
     volumes:
       - pgadmin_data:/var/lib/pgadmin
-      # https://www.pgadmin.org/docs/pgadmin4/latest/import_export_servers.html#json-format
-      - ./pgadmin_server.json:/pgadmin4/servers.json
     environment:
       # https://github.com/pgadmin-org/pgadmin4/blob/master/docs/en_US/container_deployment.rst
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
