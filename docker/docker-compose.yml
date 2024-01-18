@@ -1,59 +1,80 @@
 services:
-  app:
+  php-app:
     build:
       context: ./
       dockerfile: Dockerfile
     container_name: php-app
     working_dir: /var/www/
+    ports:
+      - 50500:9000
     # Conditional volume mounting based on environment variable
     volumes:
       - ../src:/var/www
-      - ./php/php.ini-${APP_ENV}:/usr/local/etc/php/php.ini  # Mount environment-specific php.ini
+    # Mount environment-specific php.ini
+      - ./php/php.ini-${APP_ENV}:/usr/local/etc/php/php.ini
 
   nginx:
     image: nginx:1.25.3-alpine
     container_name: nginx
     restart: always
     ports:
-      - 8000:80
+      - 50501:8080
     volumes:
       - ../src:/var/www
       - ./nginx:/etc/nginx/conf.d
 
   pgsql:
     image: postgres:${POSTGRES_VERSION}-alpine
-    container_name: postgress-db
+    container_name: pgsql
+    restart: always
     volumes:
       - dbdata:/var/lib/postgresql/data
       - ./postgres/postgresql.conf:/etc/postgresql/postgresql.conf
     shm_size: 2GB
+    ports:
+      - 50502:5432
     environment:
       POSTGRES_INITDB_ARGS_FILE: "/run/secrets/db_init_args"
-      POSTGRES_USER_FILE: /run/secrets/db_user
       POSTGRES_PASSWORD_FILE: /run/secrets/db_password
-      POSTGRES_DB_FILE: /run/secrets/db_name
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB}
       # it can be desireable to store the transaction log in a different directory which may be
       # backed by storage with different performance or reliability characteristics.
       POSTGRES_INITDB_WALDIR: ${POSTGRES_INITDB_WALDIR}
       PGDATA: ${PGDATA}
-    ports:
-      - ${HOST_ADDRESS}:5433
     secrets:
-      - db_name
-      - db_user
       - db_password
       - db_init_args
+
+  pgadmin:
+    image: elestio/pgadmin:latest
+    container_name: pgadmin
+    restart: always
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+      # https://www.pgadmin.org/docs/pgadmin4/latest/import_export_servers.html#json-format
+      - ./pgadmin_server.json:/pgadmin4/servers.json
+    environment:
+      # https://github.com/pgadmin-org/pgadmin4/blob/master/docs/en_US/container_deployment.rst
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD_FILE: /run/secrets/pgadmin_password
+      PGADMIN_LISTEN_PORT: 65500
+    ports:
+      - 50503:65500
+    secrets:
+      - pgadmin_password
+    depends_on:
+      - pgsql
 
 # Docker Storage
 volumes:
   dbdata:
+  pgadmin_data:
 
 secrets:
-  db_name:
-     file: ./secrets/.pg_dbname.env
-  db_user:
-     file: ./secrets/.pg_user.env
   db_password:
      file: ./secrets/.pg_password.env
   db_init_args:
      file: ./secrets/.pg_init_args.env
+  pgadmin_password:
+     file: ./secrets/.pgadmin_password.env
