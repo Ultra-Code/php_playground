@@ -1,18 +1,20 @@
 <?xml version="1.0"?>
 <psalm
-    errorLevel="1"
-    resolveFromConfigFile="true"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+
+    errorLevel="1"
+    resolveFromConfigFile="true"
     findUnusedBaselineEntry="true"
     findUnusedCode="true"
+    autoloader="./src/vendor/autoload.php"
 >
     <projectFiles>
         <directory name="src" />
         <ignoreFiles>
             <!-- This isn't ignored because it is needed for autoloading -->
-            <!-- <directory name="src/vendor" /> -->
+            <directory name="src/vendor" />
         </ignoreFiles>
     </projectFiles>
 </psalm>
