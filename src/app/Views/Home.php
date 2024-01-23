@@ -22,29 +22,41 @@ class Home
         //
         // debug_zval_dump($_REQUEST);
         try {
-            $db = new PDO(dsn: "pgsql:host=pgsql;port=5432;dbname=default-db", username: "postgres", password:"postgress_password", options:[
+
+            $db = new PDO(
+                dsn: "pgsql:host=".(string)getenv("DB_HOST").";port=".(string)getenv("DB_PORT").";dbname=".(string)getenv("POSTGRES_DB"),
+                username: (string)getenv("POSTGRES_USER"),
+                password: trim((string)file_get_contents("/run/secrets/db_password")),
+                options:[
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 PDO::ATTR_EMULATE_PREPARES => false
-            ]);
+            ]
+            );
+
+        } catch (PDOException $e) {
+            throw new PDOException($e->getMessage(), (int)$e->getCode());
+        }
             $db->setAttribute(attribute:PDO::ATTR_ERRMODE, value:PDO::ERRMODE_EXCEPTION);
 
-            $brand = $_GET["brand"];
-            $query = 'SELECT * FROM cars WHERE brand = ?';
+        $brand = $_GET["brand"];
+        $query = 'SELECT * FROM cars WHERE brand = ?';
 
-            // $statment = $db->query($query);
-            $statment = $db->prepare($query);
-            $statment->execute([$brand]);
+        // $statment = $db->query($query);
+        $statment = $db->prepare($query);
+        $statment->execute([$brand]);
 
-            // foreach ($db->query($query, PDO::FETCH_OBJ) as $user) {
-            //     echo "<pre>";
-            //     debug_zval_dump($user);
-            // }
+        // foreach ($db->query($query, PDO::FETCH_OBJ) as $user) {
+        //     echo "<pre>";
+        //     debug_zval_dump($user);
+        // }
 
-            foreach ($statment->fetchAll() as $user) {
-                echo "<pre>";
-                debug_zval_dump($user);
-            }
+        foreach ($statment->fetchAll() as $user) {
+            echo "<pre>";
+            debug_zval_dump($user);
+        }
 
+        try {
+            $db->beginTransaction();
             // debug_zval_dump($statment->fetchAll(PDO::FETCH_NUM));
             $brand = "Hondai";
             $model = "G15";
@@ -66,10 +78,14 @@ class Home
                 debug_zval_dump($user);
             }
 
-        } catch (PDOException $e) {
-            throw new PDOException($e->getMessage(), (int)$e->getCode());
+            $db->commit();
+        } catch (\Throwable $exception) {
+            // check that a transcation is already running since rollBack can throw an error
+            if ($db->inTransaction()) {
+                $db->rollBack();
+            }
         }
-        $_SESSION['count'] = ($_SESSION['count'] ?? 0) + 1;
+                $_SESSION['count'] = ($_SESSION['count'] ?? 0) + 1;
         echo "Home Page";
         return <<<FORM
             <form action="/upload" method="post" enctype="multipart/form-data">
