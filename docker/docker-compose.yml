@@ -12,6 +12,14 @@ services:
       - ../src:/var/www
     # Mount environment-specific php.ini
       - ./php/php.ini-${APP_ENV}:/usr/local/etc/php/php.ini
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      POSTGRES_DB : ${POSTGRES_DB}
+      POSTGRES_USER : ${POSTGRES_USER}
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+    secrets:
+      - db_password
 
   nginx:
     image: nginx:1.25.3-alpine
@@ -32,19 +40,17 @@ services:
       - ./postgres/postgresql.conf:/etc/postgresql/postgresql.conf
     shm_size: 2GB
     ports:
-      - 50502:5432
+      - 50502:${DB_PORT}
     environment:
       POSTGRES_INITDB_ARGS_FILE: "/run/secrets/db_init_args"
       POSTGRES_PASSWORD_FILE: /run/secrets/db_password
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_DB: ${POSTGRES_DB}
-      # it can be desireable to store the transaction log in a different directory which may be
-      # backed by storage with different performance or reliability characteristics.
       POSTGRES_INITDB_WALDIR: ${POSTGRES_INITDB_WALDIR}
       PGDATA: ${PGDATA}
     secrets:
-      - db_password
       - db_init_args
+      - db_password
 
   pgadmin:
     image: elestio/pgadmin:latest
