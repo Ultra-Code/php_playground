@@ -26,8 +26,8 @@ $router->get("/", [\Playground\Views\Home::class,'index'])
 // $router->register("/invoices", fn () => "Invoices Page");
 
 try {
-echo $router->resolve($_SERVER["REQUEST_METHOD"], $_SERVER["REQUEST_URI"]);
-} catch (\Playground\Exceptions\RouteNotFound $exception){
+    echo $router->resolve($_SERVER["REQUEST_METHOD"], $_SERVER["REQUEST_URI"]);
+} catch (\Playground\Exceptions\RouteNotFound $exception) {
     // header(header: "HTTP/1.1: 404 not found",response_code:404);
     http_response_code(404);
     echo $exception->getMessage();

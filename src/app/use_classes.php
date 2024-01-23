@@ -77,7 +77,7 @@ class use_classes
         }
 
 
-        $invoices = new \Playground\InvoiceCollectionArrayIterator([3,6,9,7]);
+        $invoices = new \Playground\InvoiceCollectionArrayAggregator([3,6,9,7]);
         foreach ($invoices  as $index => $value) {
             echo $index . ' = ' . $value . PHP_EOL;
         }
