@@ -16,6 +16,10 @@ echo '<pre>';
 // phpinfo();
 // print_r($_SERVER);
 // echo '<pre>';
+xdebug_info();
+$value = ["name" => "Bernard"];
+var_dump($value);
+debug_zval_dump($value);
 $router = new \Playground\Router();
 $router->get("/", [\Playground\Views\Home::class,'index'])
         ->post("/upload", [\Playground\Views\Home::class,'upload'])
