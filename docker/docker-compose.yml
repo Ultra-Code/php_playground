@@ -12,6 +12,7 @@ services:
       - ../src:/var/www
     # Mount environment-specific php.ini
       - ./php/php.ini-${APP_ENV}:/usr/local/etc/php/php.ini
+      - ./php/99-xdebug.ini:/usr/local/etc/php/conf.d/99-xdebug.ini
     environment:
       DB_HOST: ${DB_HOST}
       DB_PORT: ${DB_PORT}
