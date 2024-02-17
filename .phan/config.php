@@ -35,7 +35,6 @@ use Phan\Issue;
  * '-d' flag.
  */
 return [
-
     // The PHP version that the codebase will be checked for compatibility against.
     // For best results, the PHP binary used to run Phan should have the same PHP version.
     // (Phan relies on Reflection for some types, param counts,
@@ -50,41 +49,34 @@ return [
     // Note that the **only** effect of choosing `'5.6'` is to infer that functions removed in php 7.0 exist.
     // (See `backward_compatibility_checks` for additional options)
     'target_php_version' => null,
-
     // If enabled, missing properties will be created when
     // they are first seen. If false, we'll report an
     // error message if there is an attempt to write
     // to a class property that wasn't explicitly
     // defined.
     'allow_missing_properties' => false,
-
     // If enabled, null can be cast to any type and any
     // type can be cast to null. Setting this to true
     // will cut down on false positives.
     'null_casts_as_any_type' => false,
-
     // If enabled, allow null to be cast as any array-like type.
     //
     // This is an incremental step in migrating away from `null_casts_as_any_type`.
     // If `null_casts_as_any_type` is true, this has no effect.
     'null_casts_as_array' => false,
-
     // If enabled, allow any array-like type to be cast to null.
     // This is an incremental step in migrating away from `null_casts_as_any_type`.
     // If `null_casts_as_any_type` is true, this has no effect.
     'array_casts_as_null' => false,
-
     // If enabled, scalars (int, float, bool, string, null)
     // are treated as if they can cast to each other.
     // This does not affect checks of array keys. See `scalar_array_key_cast`.
     'scalar_implicit_cast' => false,
-
     // If enabled, any scalar array keys (int, string)
     // are treated as if they can cast to each other.
     // E.g. `array<int,stdClass>` can cast to `array<string,stdClass>` and vice versa.
     // Normally, a scalar type such as int could only cast to/from int and mixed.
     'scalar_array_key_cast' => false,
-
     // If this has entries, scalars (int, float, bool, string, null)
     // are allowed to perform the casts listed.
     //
@@ -92,43 +84,36 @@ return [
     // allows casting null to a string, but not vice versa.
     // (subset of `scalar_implicit_cast`)
     'scalar_implicit_partial' => [],
-
     // If enabled, Phan will warn if **any** type in a method invocation's object
     // is definitely not an object,
     // or if **any** type in an invoked expression is not a callable.
     // Setting this to true will introduce numerous false positives
     // (and reveal some bugs).
     'strict_method_checking' => true,
-
     // If enabled, Phan will warn if **any** type of the object expression for a property access
     // does not contain that property.
     'strict_object_checking' => true,
-
     // If enabled, Phan will warn if **any** type in the argument's union type
     // cannot be cast to a type in the parameter's expected union type.
     // Setting this to true will introduce numerous false positives
     // (and reveal some bugs).
     'strict_param_checking' => true,
-
     // If enabled, Phan will warn if **any** type in a property assignment's union type
     // cannot be cast to a type in the property's declared union type.
     // Setting this to true will introduce numerous false positives
     // (and reveal some bugs).
     'strict_property_checking' => true,
-
     // If enabled, Phan will warn if **any** type in a returned value's union type
     // cannot be cast to the declared return type.
     // Setting this to true will introduce numerous false positives
     // (and reveal some bugs).
     'strict_return_checking' => true,
-
     // If true, seemingly undeclared variables in the global
     // scope will be ignored.
     //
     // This is useful for projects with complicated cross-file
     // globals that you have no hope of fixing.
     'ignore_undeclared_variables_in_global_scope' => false,
-
     // Set this to false to emit `PhanUndeclaredFunction` issues for internal functions that Phan has signatures for,
     // but aren't available in the codebase, or from Reflection.
     // (may lead to false positives if an extension isn't loaded)
@@ -138,7 +123,6 @@ return [
     // Even when this is false, Phan will still infer return values and check parameters of internal functions
     // if Phan has the signatures.
     'ignore_undeclared_functions_with_known_signatures' => false,
-
     // Backwards Compatibility Checking. This is slow
     // and expensive, but you should consider running
     // it before upgrading your version of PHP to a
@@ -156,12 +140,10 @@ return [
     // syntax checks for php 5.3 through another method such as
     // `InvokePHPNativeSyntaxCheckPlugin` (see .phan/plugins/README.md).
     'backward_compatibility_checks' => false,
-
     // If true, check to make sure the return type declared
     // in the doc-block (if any) matches the return type
     // declared in the method signature.
     'check_docblock_signature_return_type_match' => true,
-
     // This setting maps case-insensitive strings to union types.
     //
     // This is useful if a project uses phpdoc that differs from the phpdoc2 standard.
@@ -181,7 +163,6 @@ return [
     //
     // Example setting: `['unknown' => '', 'number' => 'int|float', 'char' => 'string', 'long' => 'int', 'the' => '']`
     'phpdoc_type_mapping' => [],
-
     // Set to true in order to attempt to detect dead
     // (unreferenced) code. Keep in mind that the
     // results will only be a guess given that classes,
@@ -193,26 +174,22 @@ return [
     // To more aggressively detect dead code,
     // you may want to set `dead_code_detection_prefer_false_negative` to `false`.
     'dead_code_detection' => true,
-
     // Set to true in order to attempt to detect unused variables.
     // `dead_code_detection` will also enable unused variable detection.
     //
     // This has a few known false positives, e.g. for loops or branches.
     'unused_variable_detection' => true,
-
     // Set to true in order to attempt to detect redundant and impossible conditions.
     //
     // This has some false positives involving loops,
     // variables set in branches of loops, and global variables.
     'redundant_condition_detection' => true,
-
     // If enabled, Phan will act as though it's certain of real return types of a subset of internal functions,
     // even if those return types aren't available in reflection (real types were taken from php 7.3 or 8.0-dev, depending on target_php_version).
     //
     // Note that with php 7 and earlier, php would return null or false for many internal functions if the argument types or counts were incorrect.
     // As a result, enabling this setting with target_php_version 8.0 may result in false positives for `--redundant-condition-detection` when codebases also support php 7.x.
     'assume_real_types_for_internal_functions' => true,
-
     // If true, this runs a quick version of checks that takes less
     // time at the cost of not running as thorough
     // of an analysis. You should consider setting this
@@ -243,24 +220,20 @@ return [
     // detect that it is actually returning the passed in
     // `string` instead of an `int` as declared.
     'quick_mode' => false,
-
     // Override to hardcode existence and types of (non-builtin) globals in the global scope.
     // Class names should be prefixed with `\`.
     //
     // (E.g. `['_FOO' => '\FooClass', 'page' => '\PageClass', 'userId' => 'int']`)
     'globals_type_map' => [],
-
     // The minimum severity level to report on. This can be
     // set to `Issue::SEVERITY_LOW`, `Issue::SEVERITY_NORMAL` or
     // `Issue::SEVERITY_CRITICAL`. Setting it to only
     // critical issues is a good place to start on a big
     // sloppy mature code base.
     'minimum_severity' => Issue::SEVERITY_LOW,
-
     // Add any issue types (such as `'PhanUndeclaredMethod'`)
     // to this list to inhibit them from being reported.
     'suppress_issue_types' => [],
-
     // A regular expression to match files to be excluded
     // from parsing and analysis and will not be read at all.
     //
@@ -269,14 +242,12 @@ return [
     // can't be removed for whatever reason.
     // (e.g. `'@Test\.php$@'`, or `'@vendor/.*/(tests|Tests)/@'`)
     'exclude_file_regex' => '@^vendor/.*/(tests?|Tests?)/@',
-
     // A list of files that will be excluded from parsing and analysis
     // and will not be read at all.
     //
     // This is useful for excluding hopelessly unanalyzable
     // files that can't be removed for whatever reason.
     'exclude_file_list' => [],
-
     // A directory list that defines files that will be excluded
     // from static analysis, but whose class and method
     // information should be included.
@@ -291,21 +262,17 @@ return [
     'exclude_analysis_directory_list' => [
         'vendor/',
     ],
-
     // Enable this to enable checks of require/include statements referring to valid paths.
     // The settings `include_paths` and `warn_about_relative_include_statement` affect the checks.
     'enable_include_path_checks' => true,
-
     // The number of processes to fork off during the analysis
     // phase.
-    'processes' => 1,//((PHP_OS_FAMILY == 'Windows') ? ((int) getenv('NUMBER_OF_PROCESSORS') + 1) : substr_count((string) file_get_contents('/proc/cpuinfo'), 'processor')) + 1,
-
+    'processes' => 1,  // ((PHP_OS_FAMILY == 'Windows') ? ((int) getenv('NUMBER_OF_PROCESSORS') + 1) : substr_count((string) file_get_contents('/proc/cpuinfo'), 'processor')) + 1,
     // List of case-insensitive file extensions supported by Phan.
     // (e.g. `['php', 'html', 'htm']`)
     'analyzed_file_extensions' => [
         'php',
     ],
-
     // You can put paths to stubs of internal extensions in this config option.
     // If the corresponding extension is **not** loaded, then Phan will use the stubs instead.
     // Phan will continue using its detailed type annotations,
@@ -316,7 +283,6 @@ return [
     //
     // (e.g. `['xdebug' => '.phan/internal_stubs/xdebug.phan_php']`)
     'autoload_internal_extension_signatures' => [],
-
     // A list of plugin files to execute.
     //
     // Plugins which are bundled with Phan can be added here by providing their name (e.g. `'AlwaysReturnPlugin'`)
@@ -338,7 +304,6 @@ return [
         'StrictComparisonPlugin',
         'LoopVariableReusePlugin',
     ],
-
     // A list of directories that should be parsed for class and
     // method information. After excluding the directories
     // defined in `exclude_analysis_directory_list`, the remaining
@@ -349,7 +314,6 @@ return [
     'directory_list' => [
         'src',
     ],
-
     // A list of individual files to include in analysis
     // with a path relative to the root directory of the
     // project.
