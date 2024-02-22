@@ -312,7 +312,12 @@ return [
     // Thus, both first-party and third-party code being used by
     // your application should be included in this list.
     'directory_list' => [
-        '.',
+        'app',
+        'bootstrap',
+        'config',
+        'database',
+        'routes',
+        'tests',
     ],
     // A list of individual files to include in analysis
     // with a path relative to the root directory of the

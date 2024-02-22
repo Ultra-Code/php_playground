@@ -11,6 +11,16 @@
     autoloader="vendor/autoload.php"
 >
     <projectFiles>
-        <directory name="."/>
+        <directory name="app"/>
+        <directory name="bootstrap"/>
+        <directory name="config"/>
+        <directory name="database"/>
+        <directory name="routes"/>
+        <directory name="tests"/>
     </projectFiles>
-<plugins><pluginClass class="Psl\Psalm\Plugin"/><pluginClass class="Psalm\LaravelPlugin\Plugin"/><pluginClass class="Psalm\PhpUnitPlugin\Plugin"/></plugins></psalm>
+    <plugins>
+        <pluginClass class="Psl\Psalm\Plugin"/>
+        <pluginClass class="Psalm\LaravelPlugin\Plugin"/>
+        <pluginClass class="Psalm\PhpUnitPlugin\Plugin"/>
+    </plugins>
+</psalm>
