@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +15,9 @@ use Illuminate\Support\Facades\Route;
  */
 
 Route::get('/', function () {
+    base_path('.');
+
+    File::files('.', true);
+
     return view('welcome');
 });
