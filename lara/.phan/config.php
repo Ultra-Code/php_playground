@@ -267,7 +267,7 @@ return [
     'enable_include_path_checks' => true,
     // The number of processes to fork off during the analysis
     // phase.
-    'processes' => 1,  // ((PHP_OS_FAMILY == 'Windows') ? ((int) getenv('NUMBER_OF_PROCESSORS') + 1) : substr_count((string) file_get_contents('/proc/cpuinfo'), 'processor')) + 1,
+    'processes' => 1,
     // List of case-insensitive file extensions supported by Phan.
     // (e.g. `['php', 'html', 'htm']`)
     'analyzed_file_extensions' => [
@@ -291,18 +291,53 @@ return [
     //
     // Alternately, you can pass in the full path to a PHP file with the plugin's implementation (e.g. `'vendor/phan/phan/.phan/plugins/AlwaysReturnPlugin.php'`)
     'plugins' => [
+        'UnusedSuppressionPlugin',
+        'FFIAnalysisPlugin',
         'AlwaysReturnPlugin',
-        'DollarDollarPlugin',
         'DuplicateArrayKeyPlugin',
-        'DuplicateExpressionPlugin',
         'PregRegexCheckerPlugin',
         'PrintfCheckerPlugin',
-        'SleepCheckerPlugin',
         'UnreachableCodePlugin',
+        // since this may double time needed for phan to analyze projects, disable it if slow
+        'InvokePHPNativeSyntaxCheckPlugin',
         'UseReturnValuePlugin',
+        'PHPUnitAssertionPlugin',
         'EmptyStatementListPlugin',
-        'StrictComparisonPlugin',
         'LoopVariableReusePlugin',
+        'RedundantAssignmentPlugin',
+        'UnknownClassElementAccessPlugin',
+        'MoreSpecificElementTypePlugin',
+        'UnsafeCodePlugin',
+        'NonBoolBranchPlugin',
+        'NonBoolInLogicalArithPlugin',
+        'InvalidVariableIssetPlugin',
+        'NotFullyQualifiedUsagePlugin',
+        'NumericalComparisonPlugin',
+        'StrictLiteralComparisonPlugin',
+        'SleepCheckerPlugin',
+        'UnknownElementTypePlugin',
+        'DuplicateExpressionPlugin',
+        'SuspiciousParamOrderPlugin',
+        'PossiblyStaticMethodPlugin',
+        'PHPDocRedundantPlugin',
+        'StrictComparisonPlugin',
+        'DollarDollarPlugin',
+        'DuplicateConstantPlugin',
+        'ConstantVariablePlugin'
+    ],
+    'plugin_config' => [
+        // A list of 1 or more PHP binaries (Absolute path or program name found in $PATH)
+        // to use to analyze your files with PHP's native `--syntax-check`.
+        //
+        // This can be used to simultaneously run PHP's syntax checks with multiple PHP versions.
+        // e.g. `'plugin_config' => ['php_native_syntax_check_binaries' => ['php72', 'php70', 'php56']]`
+        // if all of those programs can be found in $PATH
+        // 'php_native_syntax_check_binaries' => [PHP_BINARY],
+        // The maximum number of `php --syntax-check` processes to run at any point in time
+        // (Minimum: 1. Default: 1).
+        // This may be temporarily higher if php_native_syntax_check_binaries
+        // has more elements than this process count.
+        'php_native_syntax_check_max_processes' => ((PHP_OS_FAMILY == 'Windows') ? ((int) getenv('NUMBER_OF_PROCESSORS') + 1) : substr_count((string) file_get_contents('/proc/cpuinfo'), 'processor')) + 1,
     ],
     // A list of directories that should be parsed for class and
     // method information. After excluding the directories
@@ -318,6 +353,7 @@ return [
         'database',
         'routes',
         'tests',
+        'vendor/laravel/framework'
     ],
     // A list of individual files to include in analysis
     // with a path relative to the root directory of the
