@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Post;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\File;
@@ -21,5 +22,12 @@ Route::get('/', static function (): View|Factory {
 
     File::files('.', true);
 
-    return view('welcome');
+    return view('post');
 });
+
+Route::get('post/{wildcard}', static function (string $wildcard): View|Factory {
+    return view(
+        'post',
+        ['post' => Post::find($wildcard)]
+    );
+})->where('wildcard', '[\w_\-]+');
