@@ -173,7 +173,7 @@ return [
     //
     // To more aggressively detect dead code,
     // you may want to set `dead_code_detection_prefer_false_negative` to `false`.
-    'dead_code_detection' => true,
+    'dead_code_detection' => false,
     // Set to true in order to attempt to detect unused variables.
     // `dead_code_detection` will also enable unused variable detection.
     //
@@ -299,9 +299,9 @@ return [
         'PrintfCheckerPlugin',
         'UnreachableCodePlugin',
         // since this may double time needed for phan to analyze projects, disable it if slow
-        'InvokePHPNativeSyntaxCheckPlugin',
+        // 'InvokePHPNativeSyntaxCheckPlugin',
         'UseReturnValuePlugin',
-        'PHPUnitAssertionPlugin',
+        // 'PHPUnitAssertionPlugin',
         'EmptyStatementListPlugin',
         'LoopVariableReusePlugin',
         'RedundantAssignmentPlugin',
@@ -311,7 +311,7 @@ return [
         'NonBoolBranchPlugin',
         'NonBoolInLogicalArithPlugin',
         'InvalidVariableIssetPlugin',
-        'NotFullyQualifiedUsagePlugin',
+        // 'NotFullyQualifiedUsagePlugin',
         'NumericalComparisonPlugin',
         'StrictLiteralComparisonPlugin',
         'SleepCheckerPlugin',
@@ -325,20 +325,20 @@ return [
         'DuplicateConstantPlugin',
         'ConstantVariablePlugin'
     ],
-    'plugin_config' => [
-        // A list of 1 or more PHP binaries (Absolute path or program name found in $PATH)
-        // to use to analyze your files with PHP's native `--syntax-check`.
-        //
-        // This can be used to simultaneously run PHP's syntax checks with multiple PHP versions.
-        // e.g. `'plugin_config' => ['php_native_syntax_check_binaries' => ['php72', 'php70', 'php56']]`
-        // if all of those programs can be found in $PATH
-        // 'php_native_syntax_check_binaries' => [PHP_BINARY],
-        // The maximum number of `php --syntax-check` processes to run at any point in time
-        // (Minimum: 1. Default: 1).
-        // This may be temporarily higher if php_native_syntax_check_binaries
-        // has more elements than this process count.
-        'php_native_syntax_check_max_processes' => ((PHP_OS_FAMILY == 'Windows') ? ((int) getenv('NUMBER_OF_PROCESSORS') + 1) : substr_count((string) file_get_contents('/proc/cpuinfo'), 'processor')) + 1,
-    ],
+    // 'plugin_config' => [
+    //     // A list of 1 or more PHP binaries (Absolute path or program name found in $PATH)
+    //     // to use to analyze your files with PHP's native `--syntax-check`.
+    //     //
+    //     // This can be used to simultaneously run PHP's syntax checks with multiple PHP versions.
+    //     // e.g. `'plugin_config' => ['php_native_syntax_check_binaries' => ['php72', 'php70', 'php56']]`
+    //     // if all of those programs can be found in $PATH
+    //     // 'php_native_syntax_check_binaries' => [PHP_BINARY],
+    //     // The maximum number of `php --syntax-check` processes to run at any point in time
+    //     // (Minimum: 1. Default: 1).
+    //     // This may be temporarily higher if php_native_syntax_check_binaries
+    //     // has more elements than this process count.
+    //     'php_native_syntax_check_max_processes' => ((PHP_OS_FAMILY == 'Windows') ? ((int) getenv('NUMBER_OF_PROCESSORS') + 1) : substr_count((string) file_get_contents('/proc/cpuinfo'), 'processor')) + 1,
+    // ],
     // A list of directories that should be parsed for class and
     // method information. After excluding the directories
     // defined in `exclude_analysis_directory_list`, the remaining
