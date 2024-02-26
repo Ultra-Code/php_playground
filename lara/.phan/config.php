@@ -353,7 +353,8 @@ return [
         'database',
         'routes',
         'tests',
-        'vendor/laravel/framework'
+        'vendor/laravel/framework',
+        'vendor/symfony'
     ],
     // A list of individual files to include in analysis
     // with a path relative to the root directory of the
